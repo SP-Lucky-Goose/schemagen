@@ -24,7 +24,7 @@ jobs:
           server-id: github
 
       - name: Build with Maven
-        run: mvn -B package
+        run: mvn -B install
 
       - name: Publish to GitHub Packages Apache Maven
         run: mvn deploy
