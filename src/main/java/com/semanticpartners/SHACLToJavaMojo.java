@@ -5,7 +5,6 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.RDFLanguages;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
-import org.apache.maven.plugin.MojoFailureException;
 import org.apache.maven.plugins.annotations.LifecyclePhase;
 import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
@@ -15,8 +14,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.Arrays;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -25,7 +24,7 @@ import java.util.Set;
  * package com.semanticpartners
  **/
 @Mojo(name = "generate-java", defaultPhase = LifecyclePhase.GENERATE_SOURCES)
-public class ShaclToJavaMojo extends AbstractMojo {
+public class SHACLToJavaMojo extends AbstractMojo {
 
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
     private MavenProject project;
@@ -41,7 +40,7 @@ public class ShaclToJavaMojo extends AbstractMojo {
 
 
     @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public void execute() throws MojoExecutionException {
         getLog().info("Starting SHACL to Java generation...");
 
         if (!this.shapesFolder.exists()) {
@@ -59,7 +58,7 @@ public class ShaclToJavaMojo extends AbstractMojo {
                 Files.createDirectories(packageDir.toPath());
             }
 
-            for (File file : this.shapesFolder.listFiles()){
+            for (File file : Objects.requireNonNull(this.shapesFolder.listFiles())){
                 if (file.isHidden()) return;
                 getLog().info("File being processed: " + file.getPath());
 
@@ -80,7 +79,7 @@ public class ShaclToJavaMojo extends AbstractMojo {
                 } else {
                     getLog().info("Skipping file: " + file.getPath());
                 }
-            };
+            }
 
         } catch (IOException e) {
             throw new MojoExecutionException("Error creating output directory", e);

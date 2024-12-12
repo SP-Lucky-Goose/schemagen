@@ -1,0 +1,70 @@
+@prefix test: <http://www.example.org/test#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+
+# NodeShape for SavingsAccount
+test:SavingsAccountShape
+	a              sh:NodeShape ;
+	sh:targetClass test:SavingsAccount ;
+	sh:property    [ sh:path      test:accountNumber ;
+					 sh:datatype  xsd:string ;
+					 sh:minLength 10 ;
+					 sh:maxLength 15 ; ] ;
+	sh:property    [ sh:path         test:balance ;
+					 sh:datatype     xsd:decimal ;
+					 sh:minInclusive 0 ; ] ;
+	sh:property    [ sh:path         test:interestRate ;
+					 sh:datatype     xsd:decimal ;
+					 sh:minInclusive 0 ;
+					 sh:maxInclusive 20 ; ] .
+
+test:CheckingAccountShape
+	a              sh:NodeShape ;
+	sh:targetClass test:CheckingAccount ;
+	sh:property    [ sh:path      test:accountNumber ;
+					 sh:datatype  xsd:string ;
+					 sh:minLength 10 ;
+					 sh:maxLength 15 ; ] ;
+	sh:property    [ sh:path         test:balance ;
+					 sh:datatype     xsd:decimal ;
+					 sh:minInclusive 0 ; ] ;
+	sh:property    [ sh:path         test:overdraftLimit ;
+					 sh:datatype     xsd:decimal ;
+					 sh:minInclusive 0 ;
+					 sh:maxInclusive 1000 ; ] .
+
+test:LoanAccountShape
+	a              sh:NodeShape ;
+	sh:targetClass test:LoanAccount ;
+	sh:property    [ sh:path      test:loanId ;
+					 sh:datatype  xsd:string ;
+					 sh:minLength 8 ;
+					 sh:maxLength 12 ; ] ;
+	sh:property    [ sh:path         test:loanAmount ;
+					 sh:datatype     xsd:decimal ;
+					 sh:minInclusive 1000 ; ] ;
+	sh:property    [ sh:path         test:interestRate ;
+					 sh:datatype     xsd:decimal ;
+					 sh:minInclusive 0 ;
+					 sh:maxInclusive 25 ; ] .
+
+test:CreditCardAccountShape
+	a              sh:NodeShape ;
+	sh:targetClass test:CreditCardAccount ;
+	sh:property    [ sh:path      test:cardNumber ;
+					 sh:datatype  xsd:string ;
+					 sh:minLength 16 ;
+					 sh:maxLength 16 ; ] ;
+	sh:property    [ sh:path         test:creditLimit ;
+					 sh:datatype     xsd:decimal ;
+					 sh:minInclusive 500 ; ] ;
+	sh:property    [ sh:path     test:expirationDate ;
+					 sh:datatype xsd:date ; ] ;
+	sh:property	   [ sh:datatype xsd:int ] ;
+.
+
+
+test:anRFDSClass a sh:NodeShape, rdfs:Class .

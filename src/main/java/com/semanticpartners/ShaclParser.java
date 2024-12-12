@@ -1,13 +1,12 @@
 package com.semanticpartners;
 
-import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.ResIterator;
-import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.*;
 import org.apache.jena.riot.RDFDataMgr;
-import org.apache.jena.vocabulary.OWL;
+import org.apache.jena.shacl.vocabulary.SHACLM;
+import org.apache.jena.vocabulary.OWL2;
 import org.apache.jena.vocabulary.RDF;
 import org.apache.jena.vocabulary.RDFS;
+import java.util.logging.Logger;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,18 +18,21 @@ import java.util.Set;
  **/
 public class ShaclParser {
 
+    static final Logger logger = Logger.getLogger(ShaclParser.class.getName());
+
+    private ShaclParser() {}
+
     public static Set<Resource> getNodeShapes(String filePath) {
         Set<Resource> nodeShapes = new HashSet<>();
 
         Model model = RDFDataMgr.loadModel(filePath);
-        ResIterator iter = model.listResourcesWithProperty(RDF.type, SH.NodeShape);
-
+        ResIterator iter = model.listResourcesWithProperty(RDF.type, SHACLM.NodeShape);
         while (iter.hasNext()) {
             Resource shape = iter.next();
-            if (shape.hasProperty(SH.targetClass)) {
-                Resource targetClass = shape.getPropertyResourceValue(SH.targetClass);
+            if (shape.hasProperty(SHACLM.targetClass)) {
+                Resource targetClass = shape.getPropertyResourceValue(SHACLM.targetClass);
                 nodeShapes.add(targetClass);
-            } else if (shape.hasProperty(RDF.type, RDFS.Class) || shape.hasProperty(RDF.type, OWL.Class)) {
+            } else if (shape.hasProperty(RDF.type, RDFS.Class) || shape.hasProperty(RDF.type, OWL2.Class)) {
                 nodeShapes.add(shape);
             }
         }
@@ -42,19 +44,22 @@ public class ShaclParser {
         Set<Property> propertyShapes = new HashSet<>();
 
         Model model = RDFDataMgr.loadModel(filePath);
-        ResIterator iter = model.listResourcesWithProperty(RDF.type, SH.PropertyShape);
 
-        while (iter.hasNext()) {
-            Resource shape = iter.next();
-            if (shape.hasProperty(SH.path)) {
-                try {
-                    Property path = model.createProperty(shape.getPropertyResourceValue(SH.path).getURI());
+        Set<Resource> psWithType =  model.listResourcesWithProperty(RDF.type, SHACLM.PropertyShape).toSet();
+        Set<Resource> psWithoutType =  model.listObjectsOfProperty(null, SHACLM.property).mapWith(RDFNode::asResource).toSet();
+
+        Set<Resource> allShapes = new HashSet<>();
+        allShapes.addAll(psWithType);
+        allShapes.addAll(psWithoutType);
+
+        allShapes.forEach(shape -> {
+            if (shape.hasProperty(SHACLM.path)) {
+                    Property path = model.createProperty(shape.getPropertyResourceValue(SHACLM.path).getURI());
                     propertyShapes.add(path);
-                } catch (Exception e){
-                    System.out.println("Shape not processed due to missing path: " + shape);
-                }
+            } else{
+                logger.info("Shape not processed due to missing path: " + shape);
             }
-        }
+        });
 
         return propertyShapes;
     }

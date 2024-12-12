@@ -7,6 +7,7 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Set;
+import java.util.logging.Logger;
 
 /**
  * @author Jeremy Debattista
@@ -14,6 +15,10 @@ import java.util.Set;
  * package com.semanticpartners
  **/
 public class JavaClassGenerator {
+
+    static final Logger logger = Logger.getLogger(JavaClassGenerator.class.getName());
+
+    private JavaClassGenerator() {}
 
     public static void generateJavaClass(Set<Resource> nodeShapes, Set<Property> propertyShapes, String namespace, String packageName, String className, String outputPath) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputPath))) {
@@ -45,7 +50,7 @@ public class JavaClassGenerator {
 
             writer.write("}\n");
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.info("Error in generating Java Code: " + e.getMessage());
         }
     }
 }

@@ -9,6 +9,11 @@
 
   <name>Schemagen SHACL to Java Maven Plugin</name>
 
+  <organization>
+    <name>Semantic Partners Ltd.</name>
+    <url>https://www.semanticpartners.com/</url>
+  </organization>
+
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -18,15 +23,12 @@
   </properties>
 
   <dependencies>
-
-
     <dependency>
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-plugin-api</artifactId>
       <version>3.9.6</version>
+      <scope>provided</scope>
     </dependency>
-
-
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
@@ -37,26 +39,33 @@
       <groupId>org.apache.maven</groupId>
       <artifactId>maven-project</artifactId>
       <version>2.2.1</version>
-    </dependency>
-
-
-
-    <dependency>
-      <groupId>org.apache.jena</groupId>
-      <artifactId>jena-core</artifactId>
-      <version>5.2.0</version>
+      <scope>provided</scope>
     </dependency>
     <dependency>
       <groupId>org.apache.jena</groupId>
-      <artifactId>jena-arq</artifactId>
+      <artifactId>apache-jena-libs</artifactId>
       <version>5.2.0</version>
+      <type>pom</type>
     </dependency>
-
     <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-text</artifactId>
-      <version>1.12.0</version>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.13.2</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>RELEASE</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 
+  <distributionManagement>
+    <repository>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/SP-Lucky-Goose/schemagen</url>
+    </repository>
+  </distributionManagement>
 </project>
