@@ -69,7 +69,7 @@ public class SHACLToJavaMojo extends AbstractMojo {
 
                     Set<Resource> nodeShapes = ShaclParser.getNodeShapes(file.getPath());
                     Set<Property> propertyShapes = ShaclParser.getPropertyShapes(file.getPath());
-                    String namespace = ShaclParser.getNamespace(file.getPath(), filename);
+                    String namespace = ShaclParser.getNamespace(file.getPath(), filename.toLowerCase());
 
 
                     JavaClassGenerator.generateJavaClass(nodeShapes, propertyShapes, namespace, this.packageName, filename.toUpperCase(Locale.ROOT).replace("-",""), outputPath);

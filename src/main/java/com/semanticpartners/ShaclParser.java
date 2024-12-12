@@ -54,8 +54,12 @@ public class ShaclParser {
 
         allShapes.forEach(shape -> {
             if (shape.hasProperty(SHACLM.path)) {
+                try {
                     Property path = model.createProperty(shape.getPropertyResourceValue(SHACLM.path).getURI());
                     propertyShapes.add(path);
+                } catch (Exception e) {
+                    logger.info("Shape not processed due to invalid shape: " + shape);
+                }
             } else{
                 logger.info("Shape not processed due to missing path: " + shape);
             }
