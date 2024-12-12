@@ -59,6 +59,7 @@
     </dependency>
   </dependencies>
 
+
   <build>
     <pluginManagement>
       <plugins>
@@ -73,6 +74,7 @@
             <execution>
               <goals>
                 <goal>addPluginArtifactMetadata</goal>
+                <goal>descriptor</goal>
               </goals>
             </execution>
           </executions>
@@ -89,5 +91,9 @@
       <name>GitHub Packages</name>
       <url>https://maven.pkg.github.com/SP-Lucky-Goose/schemagen</url>
     </repository>
+    <snapshotRepository>
+      <id>github</id>
+      <url>https://maven.pkg.github.com/SP-Lucky-Goose/schemagen</url>
+    </snapshotRepository>
   </distributionManagement>
 </project>
